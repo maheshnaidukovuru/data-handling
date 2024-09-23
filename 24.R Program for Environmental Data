@@ -1,0 +1,50 @@
+# Load necessary libraries
+library(scatterplot3d)
+library(plotly)
+
+# Data for Environmental Survey
+locations <- c('A', 'B', 'C', 'D', 'E')
+temperature <- c(15, 20, 18, 12, 17)
+humidity <- c(65, 70, 68, 60, 72)
+co2_levels <- c(400, 450, 420, 380, 430)
+
+# Sub Question 1: How do CO2 levels vary with both temperature and humidity across different locations?
+cat("\n1. CO2 levels variation with temperature and humidity:\n")
+print(data.frame(Location = locations, Temperature = temperature, Humidity = humidity, CO2_Levels = co2_levels))
+
+# Sub Question 2: 3D Scatter Plot to visualize the relationship between temperature, humidity, and CO2 levels
+cat("\n2. Creating 3D scatter plot for Temperature, Humidity, and CO2 Levels...\n")
+scatterplot3d(temperature, humidity, co2_levels, color = "blue", pch = 19,
+              xlab = "Temperature (°C)", ylab = "Humidity (%)", zlab = "CO2 Levels (ppm)")
+
+# Interactive 3D scatter plot
+plot_ly(x = ~temperature, y = ~humidity, z = ~co2_levels, type = "scatter3d", mode = "markers",
+        marker = list(size = 5, color = ~co2_levels, colorscale = "Viridis", showscale = TRUE)) %>%
+  layout(scene = list(xaxis = list(title = "Temperature (°C)"),
+                      yaxis = list(title = "Humidity (%)"),
+                      zaxis = list(title = "CO2 Levels (ppm)")))
+
+# Sub Question 3: Spatial pattern in temperature, humidity, and CO2 levels
+cat("\n3. Analyzing spatial pattern in 3D plot...\n")
+
+# Sub Question 4: 3D surface plot for CO2 levels based on temperature and humidity
+cat("\n4. Generating 3D surface plot for CO2 levels based on temperature and humidity...\n")
+temperature_grid <- seq(min(temperature), max(temperature), length.out = 100)
+humidity_grid <- seq(min(humidity), max(humidity), length.out = 100)
+co2_surface <- outer(temperature_grid, humidity_grid, function(t, h) 400 + 5 * t + 0.5 * h)
+
+plot_ly(x = ~temperature_grid, y = ~humidity_grid, z = ~co2_surface, type = "surface") %>%
+  layout(scene = list(xaxis = list(title = "Temperature (°C)"),
+                      yaxis = list(title = "Humidity (%)"),
+                      zaxis = list(title = "CO2 Levels (ppm)")))
+
+# Sub Question 5: Compare 3D plots of CO2 levels against temperature and humidity
+cat("\n5. Comparing 3D plots of CO2 levels against Temperature and Humidity...\n")
+
+# CO2 Levels vs Temperature
+scatterplot3d(temperature, co2_levels, humidity, color = "red", pch = 19,
+              xlab = "Temperature (°C)", ylab = "CO2 Levels (ppm)", zlab = "Humidity (%)")
+
+# CO2 Levels vs Humidity
+scatterplot3d(humidity, co2_levels, temperature, color = "green", pch = 19,
+              xlab = "Humidity (%)", ylab = "CO2 Levels (ppm)", zlab = "Temperature (°C)")

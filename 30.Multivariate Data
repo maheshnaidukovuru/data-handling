@@ -1,0 +1,37 @@
+# Load necessary libraries
+library(GGally)
+library(plotly)
+
+# Data for Multivariate
+ID <- c(1, 2, 3, 4, 5)
+X1 <- c(5, 7, 6, 8, 4)
+X2 <- c(10, 12, 11, 9, 13)
+X3 <- c(15, 14, 13, 16, 17)
+
+multivar_data <- data.frame(ID, X1, X2, X3)
+
+# Pairwise scatter plot matrix of X1, X2, and X3
+ggpairs(multivar_data[,2:4])
+
+# 3D scatter plot of X1, X2, and X3
+plot_ly(multivar_data, x = ~X1, y = ~X2, z = ~X3, type = "scatter3d", mode = "markers") %>%
+  layout(scene = list(xaxis = list(title = "X1"),
+                      yaxis = list(title = "X2"),
+                      zaxis = list(title = "X3")))
+
+# Parallel coordinates plot of X1, X2, and X3
+library(MASS)
+parcoord(multivar_data[,2:4], col = rainbow(nrow(multivar_data)))
+
+# Radar chart to compare values of X1, X2, and X3 for ID 1
+library(fmsb)
+radar_data <- data.frame(matrix(c(8, 14, 17, 0, 0, 0, 5, 10, 15), ncol=3))
+colnames(radar_data) <- c("X1", "X2", "X3")
+radarchart(radar_data, axistype = 1, title = "Radar Chart for ID 1")
+
+# Heatmap showing correlations between X1, X2, and X3
+cor_matrix <- cor(multivar_data[,2:4])
+ggplot(melt(cor_matrix), aes(Var1, Var2, fill = value)) + 
+  geom_tile() + 
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white") + 
+  ggtitle("Heatmap of Correlations between X1, X2, and X3")

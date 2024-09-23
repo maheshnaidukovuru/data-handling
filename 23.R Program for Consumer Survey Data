@@ -1,0 +1,50 @@
+# Load necessary libraries
+library(scatterplot3d)
+library(plotly)
+
+# Data for Consumer Survey
+products <- c('A', 'B', 'C', 'D', 'E')
+price <- c(50, 70, 60, 45, 55)
+rating <- c(4.2, 3.8, 4.0, 4.5, 3.9)
+age_group <- c(25, 35, 18, 45, 25)  # Using average of age groups
+
+# Sub Question 1: How do product ratings vary with both price and age group?
+cat("\n1. Product ratings variation with price and age group:\n")
+print(data.frame(Product = products, Price = price, Rating = rating, Age_Group = age_group))
+
+# Sub Question 2: 3D Scatter Plot to visualize the relationship between price, rating, and age group
+cat("\n2. Creating 3D scatter plot for Price, Rating, and Age Group...\n")
+scatterplot3d(price, rating, age_group, color = "blue", pch = 19,
+              xlab = "Price ($)", ylab = "Rating", zlab = "Age Group")
+
+# Interactive 3D scatter plot
+plot_ly(x = ~price, y = ~rating, z = ~age_group, type = "scatter3d", mode = "markers",
+        marker = list(size = 5, color = ~rating, colorscale = "Viridis", showscale = TRUE)) %>%
+  layout(scene = list(xaxis = list(title = "Price ($)"),
+                      yaxis = list(title = "Rating"),
+                      zaxis = list(title = "Age Group")))
+
+# Sub Question 3: Correlation between age group, product price, and ratings
+cat("\n3. Analyzing correlation based on 3D plot...\n")
+
+# Sub Question 4: 3D surface plot for product ratings based on price and age group
+cat("\n4. Generating 3D surface plot for product ratings based on price and age group...\n")
+price_grid <- seq(min(price), max(price), length.out = 100)
+age_group_grid <- seq(min(age_group), max(age_group), length.out = 100)
+rating_surface <- outer(price_grid, age_group_grid, function(p, a) 5 - 0.02 * p + 0.01 * a)
+
+plot_ly(x = ~price_grid, y = ~age_group_grid, z = ~rating_surface, type = "surface") %>%
+  layout(scene = list(xaxis = list(title = "Price ($)"),
+                      yaxis = list(title = "Age Group"),
+                      zaxis = list(title = "Rating")))
+
+# Sub Question 5: Compare 3D plots of product ratings against price and age group
+cat("\n5. Comparing 3D plots of product ratings against Price and Age Group...\n")
+
+# Rating vs Price
+scatterplot3d(price, rating, age_group, color = "red", pch = 19,
+              xlab = "Price ($)", ylab = "Rating", zlab = "Age Group")
+
+# Rating vs Age Group
+scatterplot3d(age_group, rating, price, color = "green", pch = 19,
+              xlab = "Age Group", ylab = "Rating", zlab = "Price ($)")

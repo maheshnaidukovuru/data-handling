@@ -1,0 +1,29 @@
+# Data for Categorical Data
+ID <- c(1, 2, 3, 4, 5)
+Gender <- c('Male', 'Female', 'Male', 'Female', 'Male')
+Education <- c('Graduate', 'Undergrad', 'High School', 'Graduate', 'Undergrad')
+Occupation <- c('Engineer', 'Teacher', 'Doctor', 'Lawyer', 'Artist')
+
+cat_data <- data.frame(ID, Gender, Education, Occupation)
+
+# Bar plot showing the count of each Gender
+ggplot(cat_data, aes(x = Gender)) +
+  geom_bar(fill = "purple") +
+  ggtitle("Bar Plot: Count of Gender")
+
+# Pie chart representing the distribution of Education levels
+education_dist <- table(cat_data$Education)
+pie(education_dist, main = "Pie Chart: Distribution of Education Levels", col = rainbow(length(education_dist)))
+
+# Stacked bar plot showing the count of each Occupation by Gender
+ggplot(cat_data, aes(x = Gender, fill = Occupation)) +
+  geom_bar(position = "stack") +
+  ggtitle("Stacked Bar Plot: Occupation by Gender")
+
+# Mosaic plot to visualize the association between Education and Occupation
+mosaicplot(~ Education + Occupation, data = cat_data, main = "Mosaic Plot: Education vs Occupation", col = TRUE)
+
+# Grouped bar plot showing counts of Gender across different Education levels
+ggplot(cat_data, aes(x = Education, fill = Gender)) +
+  geom_bar(position = "dodge") +
+  ggtitle("Grouped Bar Plot: Gender across Education Levels")

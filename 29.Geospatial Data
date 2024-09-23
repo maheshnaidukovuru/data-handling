@@ -1,0 +1,28 @@
+# Data for Geospatial
+City <- c('New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix')
+Latitude <- c(40.7128, 34.0522, 41.8781, 29.7604, 33.4484)
+Longitude <- c(-74.0060, -118.2437, -87.6298, -95.3698, -112.0740)
+Population <- c(8398748, 3990456, 2705994, 2325502, 1660272)
+
+geo_data <- data.frame(City, Latitude, Longitude, Population)
+
+# Scatter plot of cities on a map based on Latitude and Longitude
+ggplot(geo_data, aes(x = Longitude, y = Latitude)) +
+  geom_point(size = 3, color = "red") +
+  ggtitle("Scatter Plot: Cities on a Map")
+
+# Bubble map where the bubble size represents the Population
+ggplot(geo_data, aes(x = Longitude, y = Latitude, size = Population)) +
+  geom_point(color = "blue", alpha = 0.5) +
+  ggtitle("Bubble Map: Population Size by City")
+
+# Bar plot showing the top 5 cities by Population
+ggplot(geo_data, aes(x = reorder(City, -Population), y = Population)) +
+  geom_bar(stat = "identity", fill = "green") +
+  ggtitle("Bar Plot: Top 5 Cities by Population")
+
+# Heatmap of cities based on Population
+library(ggmap)
+ggplot(geo_data, aes(x = Longitude, y = Latitude)) +
+  geom_point(aes(size = Population), color = "red", alpha = 0.6) +
+  ggtitle("Heatmap: Density of Cities by Population")

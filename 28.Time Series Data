@@ -1,0 +1,30 @@
+# Data for Time Series
+Date <- as.Date(c('2023-01-01', '2023-02-01', '2023-03-01', '2023-04-01', '2023-05-01'))
+Sales <- c(100, 120, 150, 130, 140)
+
+time_series_data <- data.frame(Date, Sales)
+
+# Line plot of Sales over time
+ggplot(time_series_data, aes(x = Date, y = Sales)) +
+  geom_line() + geom_point() +
+  ggtitle("Line Plot: Sales over Time")
+
+# Bar plot showing monthly average Sales
+ggplot(time_series_data, aes(x = format(Date, "%Y-%m"), y = Sales)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  ggtitle("Bar Plot: Monthly Average Sales")
+
+# Seasonal decomposition (in real-world, you'd need longer time series data)
+library(forecast)
+sales_ts <- ts(Sales, start = c(2023, 1), frequency = 12)
+decomp <- stl(sales_ts, s.window = "periodic")
+plot(decomp)
+
+# Lag plot to analyze autocorrelation in Sales
+gglagplot(sales_ts) + ggtitle("Lag Plot: Sales Autocorrelation")
+
+# Smoothed line of Sales (using LOESS)
+ggplot(time_series_data, aes(x = Date, y = Sales)) +
+  geom_line() +
+  geom_smooth(method = "loess") +
+  ggtitle("Time Series Plot: Smoothed Sales")

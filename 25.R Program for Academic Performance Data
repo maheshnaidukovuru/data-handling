@@ -1,0 +1,34 @@
+# Load necessary libraries
+library(scatterplot3d)
+library(plotly)
+
+# Data for Academic Performance
+students <- c('A', 'B', 'C', 'D', 'E')
+math_scores <- c(85, 72, 90, 78, 88)
+science_scores <- c(78, 85, 80, 75, 82)
+attendance <- c(95, 92, 98, 85, 93)
+
+# Sub Question 1: How do science scores vary with both math scores and attendance?
+cat("\n1. Science score variation with math scores and attendance:\n")
+print(data.frame(Student = students, Math_Score = math_scores, Science_Score = science_scores, Attendance = attendance))
+
+# Sub Question 2: 3D Scatter Plot to visualize the relationship between math score, science score, and attendance
+cat("\n2. Creating 3D scatter plot for Math Score, Science Score, and Attendance...\n")
+scatterplot3d(math_scores, science_scores, attendance, color = "blue", pch = 19,
+              xlab = "Math Score", ylab = "Science Score", zlab = "Attendance (%)")
+
+# Interactive 3D scatter plot
+plot_ly(x = ~math_scores, y = ~science_scores, z = ~attendance, type = "scatter3d", mode = "markers",
+        marker = list(size = 5, color = ~science_scores, colorscale = "Viridis", showscale = TRUE)) %>%
+  layout(scene = list(xaxis = list(title = "Math Score"),
+                      yaxis = list(title = "Science Score"),
+                      zaxis = list(title = "Attendance (%)")))
+
+# Sub Question 3: Correlation between attendance, math scores, and science scores
+cat("\n3. Analyzing correlation between math, science scores, and attendance...\n")
+
+# Sub Question 4: 3D surface plot for science scores based on math scores and attendance
+cat("\n4. Generating 3D surface plot for science scores based on math scores and attendance...\n")
+math_grid <- seq(min(math_scores), max(math_scores), length.out = 100)
+attendance_grid <- seq(min(attendance), max(attendance), length.out = 100)
+science_surface <- outer(math_grid, attendance_grid, function(m, a) 50 + 0.3

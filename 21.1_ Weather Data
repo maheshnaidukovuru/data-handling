@@ -1,0 +1,57 @@
+# Load necessary libraries
+library(scatterplot3d)
+library(plotly)
+
+# Data for Weather
+dates <- c('2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04', '2023-01-05')
+temperature <- c(10, 12, 8, 15, 14)
+humidity <- c(75, 70, 80, 65, 72)
+wind_speed <- c(15, 12, 18, 20, 16)
+
+# Sub Question 1: How does temperature vary with humidity and wind speed over the recorded dates?
+cat("1. Temperature variation across humidity and wind speed:\n")
+print(data.frame(Date = dates, Temperature = temperature, Humidity = humidity, Wind_Speed = wind_speed))
+
+# Sub Question 2: Can we visualize the relationship between wind speed and humidity, considering temperature as the third dimension?
+# 3D Scatter Plot - Wind Speed vs Humidity with Temperature as Color
+cat("\n2. Visualizing relationship between wind speed, humidity, and temperature...\n")
+scatterplot3d(humidity, wind_speed, temperature, color = "blue", pch = 19,
+              xlab = "Humidity (%)", ylab = "Wind Speed (km/h)", zlab = "Temperature (°C)")
+
+# Create interactive 3D scatter plot
+plot_ly(x = ~humidity, y = ~wind_speed, z = ~temperature, type = "scatter3d", mode = "markers",
+        marker = list(size = 5, color = ~temperature, colorscale = "Viridis", showscale = TRUE)) %>%
+  layout(scene = list(xaxis = list(title = "Humidity (%)"),
+                      yaxis = list(title = "Wind Speed (km/h)"),
+                      zaxis = list(title = "Temperature (°C)")))
+
+# Sub Question 3: Is there any discernible pattern between temperature, humidity, and wind speed throughout the dataset?
+cat("\n3. Analyzing patterns between temperature, humidity, and wind speed...\n")
+# Based on the scatter plot, the patterns can be discussed (for detailed analysis).
+
+# Sub Question 4: Create a 3D surface plot to show how temperature changes with varying levels of humidity and wind speed.
+cat("\n4. 3D surface plot of temperature as a function of humidity and wind speed...\n")
+
+# Create a grid for humidity and wind speed to generate a surface plot
+humidity_grid <- seq(min(humidity), max(humidity), length.out = 100)
+wind_speed_grid <- seq(min(wind_speed), max(wind_speed), length.out = 100)
+
+# Assume a simple linear model for demonstration (you can replace this with real modeling)
+temperature_surface <- outer(humidity_grid, wind_speed_grid, function(h, w) (h + w) / 10)
+
+# 3D Surface Plot
+plot_ly(x = ~humidity_grid, y = ~wind_speed_grid, z = ~temperature_surface, type = "surface") %>%
+  layout(scene = list(xaxis = list(title = "Humidity (%)"),
+                      yaxis = list(title = "Wind Speed (km/h)"),
+                      zaxis = list(title = "Temperature (°C)")))
+
+# Sub Question 5: Compare the 3D plots of temperature against both humidity and wind speed separately.
+cat("\n5. Comparing 3D plots of temperature against humidity and wind speed separately...\n")
+
+# Temperature vs Humidity 3D Scatter Plot
+scatterplot3d(humidity, temperature, wind_speed, color = "red", pch = 19,
+              xlab = "Humidity (%)", ylab = "Temperature (°C)", zlab = "Wind Speed (km/h)")
+
+# Temperature vs Wind Speed 3D Scatter Plot
+scatterplot3d(wind_speed, temperature, humidity, color = "green", pch = 19,
+              xlab = "Wind Speed (km/h)", ylab = "Temperature (°C)", zlab = "Humidity (%)")
